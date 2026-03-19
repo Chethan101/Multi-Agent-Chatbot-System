@@ -2,10 +2,6 @@
 
 This project presents a multi-agent chatbot system integrated with a search engine, designed to handle complex user queries with a systematic approach. It leverages the capabilities of LangChain and LangGraph libraries, and Tavily for the search engine functionality. The chatbot uses the "plan-and-execute" coordination strategy among its agents to ensure effective and efficient responses.
 
-## Demo
-
-Check out the live demo of the multi-agent chatbot system: [Multi-Agent Chatbot Demo](https://multi-agent-chatbot.streamlit.app/)
-
 ## Features
 
 - **Plan-and-Execute Agent Coordination:** The system incorporates three specialized agents:
@@ -41,6 +37,3 @@ streamlit run main.py
 - [OpenAI](https://openai.com)
 - [Streamlit](https://streamlit.io)
 
-## License
-
-This project is licensed under the MIT License.
