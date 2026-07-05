@@ -10,6 +10,35 @@ load_dotenv()
 
 app = Flask(__name__)
 
+@app.route('/', methods=['GET'])
+def index():
+    return jsonify({
+        'message': 'Multi-Agent Chatbot API',
+        'version': '1.0.0',
+        'endpoints': {
+            '/api/health': {
+                'method': 'GET',
+                'description': 'Health check endpoint'
+            },
+            '/api/chat': {
+                'method': 'POST',
+                'description': 'Send a message to the chatbot',
+                'request_body': {
+                    'input': 'str - Your question or message',
+                    'openai_api_key': 'str - Your OpenAI API key'
+                }
+            }
+        },
+        'example': {
+            'url': 'https://multi-agent-chatbot-system-nwtb.vercel.app/api/chat',
+            'method': 'POST',
+            'body': {
+                'input': 'What is Python?',
+                'openai_api_key': 'sk-...'
+            }
+        }
+    })
+
 @app.route('/api/chat', methods=['POST'])
 def chat():
     try:
@@ -31,11 +60,7 @@ def chat():
 
 @app.route('/api/health', methods=['GET'])
 def health():
-    return jsonify({'status': 'ok'})
-
-@app.route('/', methods=['GET'])
-def index():
-    return jsonify({'message': 'Multi-Agent Chatbot API', 'endpoints': {'/api/health': 'GET', '/api/chat': 'POST'}})
+    return jsonify({'status': 'ok', 'message': 'API is running'})
 
 # For local development
 if __name__ == '__main__':
