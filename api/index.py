@@ -1,8 +1,14 @@
 from flask import Flask, request, jsonify
 from dotenv import load_dotenv
 import os
+import sys
 
 load_dotenv()
+
+# Add repo root to path for imports
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+from graph import get_graph
 
 app = Flask(__name__)
 
@@ -45,10 +51,17 @@ def chat():
         if not user_input or not openai_api_key:
             return jsonify({'error': 'Missing required fields: input and openai_api_key'}), 400
         
-        # Placeholder response - integrate your graph logic here
+        # Set OpenAI API key
+        os.environ['OPENAI_API_KEY'] = openai_api_key
+        
+        # Get and invoke the graph
+        graph = get_graph()
+        result = graph.invoke({"input": user_input})
+        
         return jsonify({
-            'response': f'Echo: {user_input}',
-            'message': 'Chat endpoint is working. Replace this with your graph implementation.'
+            'response': result.get('response', 'No response generated'),
+            'plan': result.get('plan', []),
+            'past_steps': result.get('past_steps', [])
         })
     except Exception as e:
         return jsonify({'error': str(e)}), 500
