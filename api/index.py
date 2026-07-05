@@ -1,6 +1,9 @@
+import sys
+import os
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 from flask import Flask, request, jsonify
 from graph import get_graph
-import os
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -15,7 +18,7 @@ def chat():
         openai_api_key = data.get('openai_api_key')
         
         if not user_input or not openai_api_key:
-            return jsonify({'error': 'Missing required fields'}), 400
+            return jsonify({'error': 'Missing required fields: input and openai_api_key'}), 400
         
         os.environ['OPENAI_API_KEY'] = openai_api_key
         
@@ -30,5 +33,10 @@ def chat():
 def health():
     return jsonify({'status': 'ok'})
 
+@app.route('/', methods=['GET'])
+def index():
+    return jsonify({'message': 'Multi-Agent Chatbot API', 'endpoints': {'/api/health': 'GET', '/api/chat': 'POST'}})
+
+# For local development
 if __name__ == '__main__':
-    app.run(debug=False)
+    app.run(debug=True, host='0.0.0.0', port=5000)
